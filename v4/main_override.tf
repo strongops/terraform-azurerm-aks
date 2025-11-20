@@ -288,6 +288,14 @@ resource "azurerm_kubernetes_cluster" "main" {
     }
   }
 
+  dynamic "upgrade_override" {
+    for_each = var.upgrade_override != null ? ["use_upgrade_override"] : []
+    content {
+      effective_until       = var.upgrade_override.effective_until
+      force_upgrade_enabled = var.upgrade_override.force_upgrade_enabled
+    }
+  }
+
   lifecycle {
     ignore_changes = [
       http_application_routing_enabled,
